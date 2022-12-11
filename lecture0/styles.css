@@ -1,0 +1,103 @@
+* {
+  margin: 0;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: end;
+  padding: 2rem;
+}
+
+.header > a {
+  font-size: 1.3rem;
+  color: black;
+  padding-right: 1.5rem;
+  text-decoration: none;
+}
+
+.header > a:hover {
+  text-decoration: underline;
+}
+
+.body {
+  align-self: center;
+  padding-top: 7rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.body > img {
+  width: 27.2rem;
+  align-self: center;
+}
+
+.body > p {
+  position: absolute;
+  font-size: 1.6rem;
+  color: #4285F4;
+  left: 375px;
+  top: 175px;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  padding: 1.2rem;
+  border: 1px solid lightgray;
+  border-radius: 9999px;
+  min-width: 56.4rem;
+  position: relative;
+  bottom: 0.3rem;
+}
+
+.searchBar:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.searchBar > input {
+  border: none;
+  outline: none;
+  flex: 1;
+  margin-left: 1rem;
+  font-size: 1.6rem;
+}
+
+.searchBar > img {
+  object-fit: contain;
+  width: 2rem;
+}
+
+.inputButtons {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.inputButtons > input {
+  background-color: whitesmoke;
+  border-radius: 3px;
+  border: none;
+  padding: 1rem 1.5rem;
+  font-size: 1.4rem;
+}
+
+.inputButtons > input:nth-child(1) {
+  margin-right: 2rem;
+}
+
+.inputButtons > input:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border: 1px solid lightgray;
+}

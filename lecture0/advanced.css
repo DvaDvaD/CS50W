@@ -1,0 +1,99 @@
+* {
+  margin: 0;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  align-items: center;
+}
+
+.header > a {
+  font-size: 1.3rem;
+  color: black;
+  padding-right: 1.5rem;
+  text-decoration: none;
+}
+
+.header > a:hover {
+  text-decoration: underline;
+}
+
+.header > img {
+  width: 7.4rem;
+}
+
+.label {
+  margin: 2.5rem 3.5rem;
+}
+
+.label > p {
+  color: red;
+  font-size: 2rem;
+  margin-left: 1rem;
+}
+
+hr {
+  border: 1px solid whitesmoke;
+}
+
+.body {
+  margin: 4.5rem;
+}
+
+.subheading {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.subheading > p:first-child {
+  font-size: 1.6rem;
+  margin-right: 62.5rem;
+}
+
+.subheading > p > b {
+  font-size: 1.3rem;
+  color: gray;
+}
+
+.inputField {
+  font-size: 1.3rem;
+  color: black;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 18rem 57rem 37rem;
+  grid-auto-rows: minmax(4.2rem, auto);
+}
+
+.inputField > input {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid lightgray;
+}
+
+.inputField > label:last-child {
+  margin-left: 2rem;
+  font-size: 1.1rem;
+  color: #666666;
+}
+
+input[value="Advanced Search"] {
+  margin-top: 2rem;
+  grid-column: 2 / 3;
+  justify-self: end;
+  padding: 0.7rem 1.6rem;
+  border-radius: 5px;
+  background-color: #4285F4;
+  color: white;
+  font-weight: 600;
+}
+
+span {
+  font-family: Monospace, sans-serif;
+}

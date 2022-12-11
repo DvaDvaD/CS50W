@@ -1,0 +1,32 @@
+// Use SASS to:
+// 1) Make variables
+// 2) Nest selectors
+// 3) Extend common styling
+
+// Make variables
+$color: red;
+
+// Nest selectors
+
+div {
+  color: white;
+
+  p {
+    font-size: 16px;
+  }
+
+  h2 {
+    font-size: 30px;
+  }
+}
+
+// Extend common styling
+%message {
+  background-color: red;
+  font-family:'Times New Roman', Times, serif;
+}
+
+.alert {
+  @extend %message;
+  color: blue;
+}
