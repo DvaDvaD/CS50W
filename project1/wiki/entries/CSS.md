@@ -1,0 +1,1 @@
+Used to style [HTML](/wiki/html) elements.

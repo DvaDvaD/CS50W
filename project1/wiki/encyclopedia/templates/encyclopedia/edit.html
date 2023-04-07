@@ -1,0 +1,26 @@
+{% extends 'encyclopedia/layout.html' %}
+
+{% block body %}
+<form
+  action="{% url 'edit' %}"
+  method="post"
+  id="create_form"
+>
+  {% csrf_token %}
+  <input
+    name="title"
+    value="{{ title }}"
+    id="title"
+    type="hidden"
+  >
+  <label for="content">Content (in Markdown format)</label>
+  <textarea
+    name="content"
+    id="content"
+  >{{ content }}</textarea>
+  <button
+    class="align-self-start mt-2"
+    type="submit"
+  >Save</button>
+</form>
+{% endblock body %}
