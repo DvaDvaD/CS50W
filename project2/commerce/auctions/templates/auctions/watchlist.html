@@ -1,0 +1,19 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+
+<h2>Watchlist</h2>
+
+{% for listing in listings %}
+<img
+  src="{{ listing.image_URL }}"
+  alt="listing_image"
+>
+<h4>{{ listing.title }}</h4>
+<p>{{ listing.description }}</p>
+<p>Current Price: {{ listing.current_price }}</p>
+{% empty %}
+<p>Watchlist is empty.</p>
+{% endfor %}
+
+{% endblock body %}
