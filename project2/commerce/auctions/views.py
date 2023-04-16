@@ -131,7 +131,7 @@ def category(request, code):
             break
     
     return render(request, "auctions/category.html", {
-        "listings": AuctionListing.objects.filter(category=code),
+        "listings": AuctionListing.objects.filter(category=code, closed=False),
         "category": category
     })
     
