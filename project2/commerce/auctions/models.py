@@ -12,7 +12,7 @@ class User(AbstractUser):
 
 class AuctionListing(models.Model):
     CATEGORY_CHOICES = [
-        ('NONE', ''),
+        ('NONE', 'No Category Listed'),
         ('FSHN', 'Fashion'),
         ('TOYS', 'Toys'),
         ('ELEC', 'Electronics'),
@@ -22,15 +22,16 @@ class AuctionListing(models.Model):
     
     title = models.CharField(max_length=128)
     description = models.TextField()
-    starting_bid = models.FloatField()
-    current_bid = models.FloatField(blank=True, null=True)
+    bid = models.FloatField()
     image_URL = models.TextField(blank=True, null=True)
     lister = models.ForeignKey(User, on_delete=models.CASCADE, related_name='listings', blank=True, null=True)
     category = models.CharField(max_length=64, choices=CATEGORY_CHOICES, default='NONE')
-    time_created = models.TimeField(auto_now_add=True)
+    time_created = models.DateTimeField(auto_now_add=True)
+    watchlisted_by = models.ManyToManyField(User, blank=True, related_name="watchlist")
+    closed = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"{self.title} ({self.category}) - {self.starting_bid}"
+        return f"{self.title} ({self.category}) - {self.bid}"
 
 
 class Bid(models.Model):
@@ -46,6 +47,7 @@ class Comment(models.Model):
     commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
     time_commented = models.DateTimeField(auto_now_add=True)
     comment = models.TextField()
+    listing = models.ForeignKey(AuctionListing, on_delete=models.CASCADE, related_name="comments", default=None)
     
     def __str__(self):
-        return f"{self.commenter} commented \"{self.comment}\" on {self.time_commented.strftime('%b. %d, %Y %I:%M %p')}"
+        return f"{self.commenter} commented \"{self.comment}\" on {self.listing} at {self.time_commented.strftime('%b. %d, %Y %I:%M %p')}"

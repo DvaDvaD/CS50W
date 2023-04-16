@@ -10,7 +10,7 @@ from .models import *
 
 def index(request):
     return render(request, "auctions/index.html", {
-        "listings": AuctionListing.objects.all()
+        "listings": AuctionListing.objects.filter(closed=False).all()
     })
 
 
@@ -72,17 +72,17 @@ def create_listing(request):
     if request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
-        starting_bid = float(request.POST['bid'])
+        bid = float(request.POST['bid'])
         image_URL = request.POST['imageURL']
         category = request.POST['category']
         
-        if not (title and description and starting_bid):
+        if not (title and description and bid):
             return render(request, "auctions/create_listing.html", {
-        "categories": AuctionListing.CATEGORY_CHOICES,
-        "message": "Title, description, and starting bid are required"
-    })
+                "categories": AuctionListing.CATEGORY_CHOICES,
+                "message": "Title, description, and starting bid are required"
+            })
         
-        new_listing = AuctionListing(title=title, description=description, starting_bid=starting_bid, image_URL=image_URL, category=category)
+        new_listing = AuctionListing(title=title, description=description, bid=bid, image_URL=image_URL, category=category, lister=request.user)
         new_listing.save()
         
         return HttpResponseRedirect(reverse('index'))
@@ -94,8 +94,25 @@ def create_listing(request):
 
 @login_required
 def watchlist(request):
+    if request.method == "POST":
+        listing_id = request.POST['listing_id']
+        
+        try:
+            listing = request.user.watchlist.get(id=listing_id)
+        except AuctionListing.DoesNotExist:
+            listing = None
+            
+        if listing:
+            request.user.watchlist.remove(listing)
+        else:
+            request.user.watchlist.add(AuctionListing.objects.get(id=listing_id))
+            
+        return render(request, "auctions/watchlist.html", {
+            "listings": request.user.watchlist.all()
+        })
+    
     return render(request, "auctions/watchlist.html", {
-        "listings": None
+        "listings": request.user.watchlist.all()
     })
 
 
@@ -107,5 +124,71 @@ def categories(request):
     
 
 @login_required
+def category(request, code):
+    for choice in AuctionListing.CATEGORY_CHOICES:
+        if choice[0] == code:
+            category = choice[1]
+            break
+    
+    return render(request, "auctions/category.html", {
+        "listings": AuctionListing.objects.filter(category=code),
+        "category": category
+    })
+    
+
+@login_required
 def listing(request, listing_id):
-    pass
+    listing = AuctionListing.objects.get(id=listing_id)
+    
+    try: 
+        current_bid = listing.bids.get(bid=listing.bid)
+    except Bid.DoesNotExist:
+        current_bid = None
+    
+    if request.method == "POST":
+        bid = float(request.POST.get('bid'))
+        if bid > listing.bid:
+            listing.bid = bid
+            listing.save()
+            new_bid = Bid(bidder=request.user, listing=listing, bid=bid)
+            new_bid.save()
+            current_bid = new_bid
+        else:
+            return render(request, "auctions/listing.html", {
+                "listing": listing,
+                "time_listed": listing.time_created,
+                "watchlisted": listing in request.user.watchlist.all(),
+                "closed": listing.closed,
+                "current_bid": current_bid,
+                "comments": listing.comments.all(),
+                "message": "Placed bid must be more than the current bid"
+            })
+    
+    return render(request, "auctions/listing.html", {
+        "listing": listing,
+        "time_listed": listing.time_created,
+        "watchlisted": listing in request.user.watchlist.all(),
+        "closed": listing.closed,
+        "current_bid": current_bid,
+        "comments": listing.comments.all()
+    })
+    
+    
+def close_listing(request, listing_id):
+    if request.method == 'POST':
+        listing = AuctionListing.objects.get(id=listing_id)
+        listing.closed = True
+        listing.save()
+        return HttpResponseRedirect(reverse('listing', args=[listing_id]))
+    return HttpResponseRedirect(reverse('index'))
+
+
+def add_comment(request, listing_id):
+    if request.method == "POST":
+        comment = request.POST.get('comment')
+        listing = AuctionListing.objects.get(id=listing_id)
+        new_comment = Comment(comment=comment, commenter=request.user, listing=listing)
+        new_comment.save()
+        
+        return HttpResponseRedirect(reverse('listing', args=[listing_id]))
+    return HttpResponseRedirect(reverse('index'))

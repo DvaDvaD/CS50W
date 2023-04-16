@@ -2,20 +2,31 @@
 
 {% block body %}
 
-<h2>Active Listings</h2>
+<h2 class='mb-4'>Active Listings</h2>
 
 {% for listing in listings %}
-{% if listing.image_URL %}
-<img
-    src="{{ listing.image_URL }}"
-    alt="listing_image"
-    width='200'
-    height='200'
->
-{% endif %}
-<h4>{{ listing.title }}</h4>
-<p>{{ listing.description }}</p>
-<p>Current Price: {{ listing.current_price }}</p>
+<div class="card mb-3">
+    <div class="row g-0">
+        {% if listing.image_URL %}
+        <div class='col-md-4'>
+            <img src="{{ listing.image_URL }}"
+                class="card-img-top ratio ratio-4x3" alt="image"
+                style='height: 250px; object-fit: contain;'>
+        </div>
+        {% endif %}
+        <div class='col-md-8'>
+            <div class="card-body">
+                <h5 class="card-title">{{ listing.title }}</h5>
+                <p class="card-text">{{ listing.description }}</p>
+                <p class="card-text">Current Bid: ${{ listing.bid }}
+                </p>
+                <a href="{% url 'listing' listing.id %}"
+                    class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% empty %}
 <p>No Active Listing.</p>
 {% endfor %}

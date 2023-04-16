@@ -8,64 +8,32 @@
 <p style='color: red;'>{{ message }}</p>
 {% endif %}
 
-<form
-  action="{% url 'create_listing' %}"
-  method="post"
->
+<form action="{% url 'create_listing' %}" method="post">
   {% csrf_token %}
-  <div class="form-group">
-    <input
-      class="form-control"
-      autofocus
-      type="text"
-      name="title"
-      placeholder="Title"
-    >
+  <div class="form-group mb-3">
+    <input class="form-control" autofocus type="text" name="title"
+      placeholder="Title">
   </div>
-  <div class="form-group">
-    <textarea
-      class="form-control"
-      type="text"
-      name="description"
-      placeholder="Description"
-    ></textarea>
+  <div class="form-group mb-3">
+    <textarea class="form-control" type="text" name="description"
+      placeholder="Description"></textarea>
   </div>
-  <div
-    style="position: relative;"
-    class="form-group"
-  >
-    <input
-      class="form-control pl-4"
-      type="number"
-      name="bid"
-      value=0
-      placeholder="Starting Bid"
-    ><span style="position: absolute; top: 6px; left: 12px;">$</span></input>
+  <div style="position: relative;" class="form-group mb-3">
+    <input class="form-control pl-4" type="number" name="bid"
+      placeholder="Starting Bid (in dollars)" step=0.01>
   </div>
-  <div class="form-group">
-    <input
-      class="form-control"
-      type="text"
-      name="imageURL"
-      placeholder="Image URL"
-    >
+  <div class="form-group mb-3">
+    <input class="form-control" type="text" name="imageURL"
+      placeholder="Image URL">
   </div>
-  <div class="form-group">
-    <select
-      class="form-control"
-      name="category"
-      placeholder="Category"
-    >
+  <div class="form-group mb-3">
+    <select class="form-control" name="category" placeholder="Category">
       {% for code, category in categories %}
       <option value="{{ code }}">{{ category }}</option>
       {% endfor %}
     </select>
   </div>
-  <input
-    class="btn btn-primary"
-    type="submit"
-    value="Create Listing"
-  >
+  <input class="btn btn-primary" type="submit" value="Create Listing">
 </form>
 
 {% endblock body %}
