@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Scroll Posts</title>
+		<style>
+			@keyframes hide {
+				0% {
+				}
+
+				100% {
+					opacity: 0;
+					height: 0px;
+				}
+			}
+
+			.post {
+				background-color: lightblue;
+				height: 20px;
+				animation-name: hide;
+				animation-play-state: paused;
+				animation-fill-mode: forwards;
+				animation-duration: 2s;
+			}
+		</style>
+		<script>
+			let counter = 1;
+			let quantity = 20;
+			let isLoading = false;
+
+			document.addEventListener("DOMContentLoaded", load);
+
+			document.onclick = (e) => {
+				const element = e.target;
+				if (element.className === "hide") {
+					element.parentElement.style.animationPlayState = "running";
+					element.parentElement.addEventListener("animationend", () => {
+						element.parentElement.remove();
+					});
+				}
+			};
+
+			window.onscroll = () => {
+				if (
+					!isLoading &&
+					window.scrollY + window.innerHeight >= document.body.offsetHeight
+				) {
+					load();
+				}
+			};
+
+			function load() {
+				let start = counter;
+				let end = start + quantity - 1;
+				counter = end + 1;
+				isLoading = true;
+
+				console.log(`${start} ${end}`);
+
+				fetch(`/posts?start=${start}&end=${end}`)
+					.then((res) => res.json())
+					.then((data) => {
+						data.posts.forEach(add_post);
+						isLoading = false;
+					});
+			}
+
+			function add_post(post) {
+				const p = document.createElement("div");
+
+				p.className = "post";
+				p.innerHTML = `${post}<button class='hide'>Hide</button>`;
+
+				document.querySelector("#posts").append(p);
+			}
+		</script>
+	</head>
+	<body>
+		<div id="posts"></div>
+	</body>
+</html>

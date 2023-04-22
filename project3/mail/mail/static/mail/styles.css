@@ -1,0 +1,17 @@
+textarea {
+	min-height: 400px;
+}
+
+p {
+	margin: 0 !important;
+}
+
+.email-entry {
+	transition-property: all;
+	transition-duration: 200ms;
+}
+
+.email-entry:hover {
+	cursor: pointer;
+	scale: 1.03;
+}
