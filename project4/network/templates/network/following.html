@@ -1,0 +1,48 @@
+{% extends 'network/layout.html' %} {% block body %}
+<h2>Following Posts</h2>
+
+{% for post in posts %}
+<div data-id="{{ post.id }}" class="post-container border rounded p-3 mb-2">
+	{% csrf_token %}
+	<h5>
+		<a href="{% url 'profile' post.poster.id %}">{{post.poster.username}}</a>
+	</h5>
+	<p>{{post.content}}</p>
+	<small class="text-black-50">{{post.created}}</small>
+	{% if post.id in liked_posts_id %}
+	<button class="like-button btn btn-danger d-block btn-sm mt-3">
+	{% else %}
+	<button class="like-button btn btn-outline-danger d-block btn-sm mt-3">
+	{% endif %}
+		<p>❤{{post.likes}}</p>
+	</button>
+</div>
+{% empty %}
+<p>No Post Yet</p>
+{% endfor %}
+<ul class="pagination">
+	{% if page_obj.has_previous %}
+	<li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+	<li class="page-item">
+		<a class="page-link" href="?page={{ page_obj.previous_page_number }}"><</a>
+	</li>
+	{% endif %}
+
+	<li class="page-item">
+		<span class="current page-link">
+			Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+		</span>
+	</li>
+
+	{% if page_obj.has_next %}
+	<li class="page-item">
+		<a class="page-link" href="?page={{ page_obj.next_page_number }}">></a>
+	</li>
+	<li class="page-item">
+		<a class="page-link" href="?page={{ page_obj.paginator.num_pages }}"
+			>&raquo;</a
+		>
+	</li>
+	{% endif %}
+</ul>
+{% endblock body %}

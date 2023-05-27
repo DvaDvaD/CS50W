@@ -1,0 +1,20 @@
+p,
+ul {
+	margin: 0 !important;
+}
+
+a {
+	text-decoration: none;
+	color: currentColor;
+}
+
+textarea {
+	width: 100%;
+}
+
+#posts > div {
+	transition-property: all;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 300ms;
+	overflow: hidden;
+}
