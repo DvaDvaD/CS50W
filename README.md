@@ -1,2 +1,2 @@
 # CS50's Web Programming with Python and JavaScript
-CS50W lecture source codes and projects
+This repository contains the source code for CS50W lectures and projects.
