@@ -11,7 +11,7 @@
   "scripts": {
     "prepare": "husky install",
     "lint-staged": "lint-staged",
-    "prettier": "prettier main.yml --write"
+    "prettier": "prettier .github --write"
   },
   "dependencies": {
     "lint-staged": "^14.0.1"
