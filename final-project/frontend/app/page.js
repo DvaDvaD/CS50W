@@ -1,7 +1,11 @@
-export default function Home() {
+import { getTransactions } from '@/lib/fetch'
+
+export default async function Home() {
+  const transactions = await getTransactions()
+
   return (
-    <main>
-      <h1>Test Fetch</h1>
+    <main className="whitespace-pre">
+      {JSON.stringify(transactions, null, 2)}
     </main>
   )
 }
