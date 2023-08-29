@@ -22,12 +22,6 @@ export const AuthProvider = ({ children }) => {
 
   const router = useRouter()
 
-  useLayoutEffect(() => {
-    if (!user) {
-      router.replace('/auth/login')
-    }
-  }, [user])
-
   useEffect(() => {
     fetch(baseURL + '/users/current_user/')
       .then(res => res.json())

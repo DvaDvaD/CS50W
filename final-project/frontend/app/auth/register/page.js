@@ -47,7 +47,7 @@ const Register = () => {
             type="submit"
             className="text-background bg-primary w-full rounded-lg py-1.5 text-center"
           >
-            Login
+            Register
           </button>
         </Form>
       </Formik>
