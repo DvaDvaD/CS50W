@@ -3,13 +3,13 @@ import Error from './Error'
 
 const Input = ({ label, name, password, ...rest }) => {
   return (
-    <div className="flex flex-col mb-3">
+    <div className="mb-3 flex flex-col">
       <label htmlFor={name}>{label}</label>
       <Field name={name} id={name} {...rest}>
         {({ field, form }) => {
           return (
             <input
-              className={`bg-transparent focus:border-accent outline-none py-2 px-3 mb-1 border-b-2 ${
+              className={`focus:border-accent mb-1 border-b-2 bg-transparent px-3 py-2 outline-none ${
                 form.errors[name] && form.touched[name]
                   ? 'border-red-300'
                   : 'border-text/10'
