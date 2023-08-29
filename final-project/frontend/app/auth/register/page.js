@@ -22,14 +22,14 @@ const validationSchema = Yup.object({
 
 const Register = () => {
   return (
-    <main className="flex justify-center items-center h-screen">
+    <main className="flex h-screen items-center justify-center">
       <Formik
         validationSchema={validationSchema}
         initialValues={initialValues}
         onSubmit={onSubmit}
       >
-        <Form className="w-full mx-4 sm:w-[25rem] border-2 rounded-lg border-text/10 p-8">
-          <p className="text-3xl text-center mb-4">Register</p>
+        <Form className="border-text/10 mx-4 w-full rounded-lg border-2 p-8 sm:w-[25rem]">
+          <p className="mb-4 text-center text-3xl">Register</p>
           <Input name="email" label="Email" placeholder="youremail@email.com" />
           <Input
             name="password"
@@ -37,7 +37,7 @@ const Register = () => {
             placeholder="Enter your password"
             password
           />
-          <p className="font-normal text-sm mb-3 -mt-3">
+          <p className="-mt-3 mb-3 text-sm font-normal">
             Already have an account?{' '}
             <Link href="/auth/login" className="text-accent">
               Login
@@ -45,7 +45,7 @@ const Register = () => {
           </p>
           <button
             type="submit"
-            className="text-background bg-primary rounded-lg text-center py-1.5 w-full"
+            className="text-background bg-primary w-full rounded-lg py-1.5 text-center"
           >
             Login
           </button>

@@ -22,14 +22,14 @@ const validationSchema = Yup.object({
 
 const Login = () => {
   return (
-    <main className="flex justify-center items-center h-screen">
+    <main className="flex h-screen items-center justify-center">
       <Formik
         validationSchema={validationSchema}
         initialValues={initialValues}
         onSubmit={onSubmit}
       >
-        <Form className="w-full mx-4 sm:w-[25rem] border-2 rounded-lg border-text/10 p-8">
-          <p className="text-3xl text-center mb-4">Login</p>
+        <Form className="border-text/10 mx-4 w-full rounded-lg border-2 p-8 sm:w-[25rem]">
+          <p className="mb-4 text-center text-3xl">Login</p>
           <Input name="email" label="Email" placeholder="youremail@email.com" />
           <Input
             name="password"
@@ -37,7 +37,7 @@ const Login = () => {
             placeholder="Enter your password"
             password
           />
-          <p className="font-normal text-sm -mt-3">
+          <p className="-mt-3 text-sm font-normal">
             Don't have an account?{' '}
             <Link
               href={'/auth/register'}
@@ -48,13 +48,13 @@ const Login = () => {
           </p>
           <p
             title="Please fill in the e-mail field to receive the password recovery email"
-            className="font-normal hover:underline cursor-pointer w-fit text-sm text-accent mb-3"
+            className="text-accent mb-3 w-fit cursor-pointer text-sm font-normal hover:underline"
           >
             Forget your password?
           </p>
           <button
             type="submit"
-            className="text-background bg-primary rounded-lg text-center py-1.5 w-full"
+            className="text-background bg-primary w-full rounded-lg py-1.5 text-center"
           >
             Login
           </button>
