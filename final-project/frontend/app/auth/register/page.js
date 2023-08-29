@@ -1,26 +1,34 @@
 'use client'
 
 import Input from '@/components/formik/Input'
+import { useAuth } from '@/context/AuthContext'
 import { Form, Formik } from 'formik'
 import Link from 'next/link'
 import React from 'react'
 import * as Yup from 'yup'
 
 const initialValues = {
+  username: '',
   email: '',
   password: '',
-}
-
-const onSubmit = values => {
-  console.log(values)
+  confirmation: '',
 }
 
 const validationSchema = Yup.object({
+  username: Yup.string().required('Required'),
   email: Yup.string().email('Invalid email format').required('Required'),
   password: Yup.string().required('Required'),
+  confirmation: Yup.string()
+    .oneOf(['', Yup.ref('password')], 'Unequal password and confirmation')
+    .required('Required'),
 })
 
 const Register = () => {
+  const { register } = useAuth()
+
+  const onSubmit = values => {
+    register(values)
+  }
   return (
     <main className="flex h-screen items-center justify-center">
       <Formik
@@ -28,13 +36,24 @@ const Register = () => {
         initialValues={initialValues}
         onSubmit={onSubmit}
       >
-        <Form className="border-text/10 mx-4 w-full rounded-lg border-2 p-8 sm:w-[25rem]">
+        <Form className="border-text/10 mx-4 w-full rounded-lg sm:w-[25rem] sm:border-2 sm:p-8">
           <p className="mb-4 text-center text-3xl">Register</p>
+          <Input
+            name="username"
+            label="Username"
+            placeholder="Enter your username"
+          />
           <Input name="email" label="Email" placeholder="youremail@email.com" />
           <Input
             name="password"
             label="Password"
             placeholder="Enter your password"
+            password
+          />
+          <Input
+            name="confirmation"
+            label="Password confirmation"
+            placeholder="Reenter your password"
             password
           />
           <p className="-mt-3 mb-3 text-sm font-normal">

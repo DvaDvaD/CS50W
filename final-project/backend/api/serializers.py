@@ -24,4 +24,4 @@ class AccountSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "email", "date_joined"]
+        fields = ["id", "email", "username", "date_joined"]

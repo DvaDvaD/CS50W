@@ -1,6 +1,6 @@
 'use client'
 import { baseURL } from '@/lib/fetch'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React, {
   createContext,
   useContext,
@@ -15,12 +15,30 @@ export const useAuth = () => {
   return useContext(AuthContext)
 }
 
+const useProtectedRoute = user => {
+  const pathname = usePathname()
+  const inAuthGroup = pathname.includes('auth') || pathname === '/'
+  const router = useRouter()
+
+  console.log(user, inAuthGroup)
+
+  useEffect(() => {
+    if (!user && !inAuthGroup) {
+      router.replace('/')
+    } else if (user && inAuthGroup) {
+      router.replace('/dashboard')
+    }
+  }, [user, inAuthGroup])
+}
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
 
   const router = useRouter()
+
+  useProtectedRoute(user)
 
   useEffect(() => {
     fetch(baseURL + '/users/current_user/')
@@ -44,8 +62,9 @@ export const AuthProvider = ({ children }) => {
       },
     })
       .then(res => res.json())
-      .then(data => {
-        setUser(data)
+      .then(user => {
+        setUser(user)
+        router.replace('/dashboard')
       })
       .catch(err => {
         setError('username/password salah')
@@ -58,6 +77,7 @@ export const AuthProvider = ({ children }) => {
       method: 'DELETE',
     }).then(res => {
       if (res.ok) {
+        router.replace('/')
         setUser(null)
       }
     })
@@ -77,18 +97,19 @@ export const AuthProvider = ({ children }) => {
       }),
     })
       .then(res => res.json())
-      .then(json => {
+      .then(user => {
         fetch(baseURL + '/user_details/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            id: json.id,
-            nama_lengkap: data.namaLengkap,
-            no_tel: data.noTel,
-            penderita: data.penderita,
+            id: user.id,
+            accounts: [],
           }),
+        }).then(() => {
+          setUser(user)
+          router.replace('/dashboard')
         })
       })
   }
