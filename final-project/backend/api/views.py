@@ -83,12 +83,12 @@ class UserDetailDetail(RetrieveUpdateDestroyAPIView):
 
 class AccountList(ListCreateAPIView):
     queryset = Account.objects.all()
-    serializer_class = Account.objects.all()
+    serializer_class = AccountSerializer
 
 
 class AccountDetail(RetrieveUpdateDestroyAPIView):
     queryset = Account.objects.all()
-    serializer_class = Account.objects.all()
+    serializer_class = AccountSerializer
 
 
 @api_view(["GET"])

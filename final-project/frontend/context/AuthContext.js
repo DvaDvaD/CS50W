@@ -105,7 +105,7 @@ export const AuthProvider = ({ children }) => {
           },
           body: JSON.stringify({
             id: user.id,
-            accounts: [],
+            accounts: [2],
           }),
         }).then(() => {
           setUser(user)
