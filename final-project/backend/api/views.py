@@ -130,14 +130,18 @@ def register(request):
     password = request.data["password"]
     confirmation = request.data["confirmation"]
     if password != confirmation:
-        return Response({"message": "Passwords must match."})
+        return Response(
+            {"message": "Passwords must match."}, status=status.HTTP_400_BAD_REQUEST
+        )
 
     # Attempt to create new user
     try:
         user = User.objects.create_user(username, email, password)
         user.save()
     except IntegrityError:
-        return Response({"message": "Username already taken."})
+        return Response(
+            {"message": "Username already taken."}, status=status.HTTP_400_BAD_REQUEST
+        )
     login(request, user)
 
     serializer = UserSerializer(user)

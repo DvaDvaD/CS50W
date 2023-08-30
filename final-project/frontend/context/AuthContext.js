@@ -20,8 +20,6 @@ const useProtectedRoute = user => {
   const inAuthGroup = pathname.includes('auth') || pathname === '/'
   const router = useRouter()
 
-  console.log(user, inAuthGroup)
-
   useEffect(() => {
     if (!user && !inAuthGroup) {
       router.replace('/')
@@ -34,7 +32,7 @@ const useProtectedRoute = user => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const router = useRouter()
 
@@ -61,13 +59,16 @@ export const AuthProvider = ({ children }) => {
         'Content-Type': 'application/json',
       },
     })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Wrong username/password')
+        return res.json()
+      })
       .then(user => {
         setUser(user)
         router.replace('/dashboard')
       })
       .catch(err => {
-        setError('username/password salah')
+        setError(err.message)
         setTimeout(() => setError(null), 6000)
       })
   }
@@ -84,6 +85,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const register = data => {
+    setLoading(true)
     fetch(baseURL + '/register/', {
       method: 'POST',
       headers: {
@@ -98,6 +100,7 @@ export const AuthProvider = ({ children }) => {
     })
       .then(res => res.json())
       .then(user => {
+        if (user.message) throw new Error(user.message)
         fetch(baseURL + '/user_details/', {
           method: 'POST',
           headers: {
@@ -105,12 +108,16 @@ export const AuthProvider = ({ children }) => {
           },
           body: JSON.stringify({
             id: user.id,
-            accounts: [2],
+            accounts: [],
           }),
         }).then(() => {
           setUser(user)
           router.replace('/dashboard')
         })
+      })
+      .catch(err => {
+        setError(err.message)
+        setTimeout(() => setError(null), 6000)
       })
   }
 

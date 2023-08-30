@@ -11,7 +11,7 @@ const Input = ({ label, name, password, ...rest }) => {
             <input
               className={`focus:border-accent mb-1 border-b-2 bg-transparent px-3 py-2 outline-none ${
                 form.errors[name] && form.touched[name]
-                  ? 'border-red-300'
+                  ? 'border-red-500'
                   : 'border-text/10'
               } placeholder:text-text/30`}
               type={password ? 'password' : 'text'}

@@ -24,7 +24,7 @@ const validationSchema = Yup.object({
 })
 
 const Register = () => {
-  const { register } = useAuth()
+  const { error, register } = useAuth()
 
   const onSubmit = values => {
     register(values)
@@ -38,6 +38,11 @@ const Register = () => {
       >
         <Form className="border-text/10 mx-4 w-full rounded-lg sm:w-[25rem] sm:border-2 sm:p-8">
           <p className="mb-4 text-center text-3xl">Register</p>
+          {error && (
+            <div className="mb-2 w-full rounded-lg border-2 border-red-500 bg-red-50 py-1.5 text-center text-red-500">
+              {error}
+            </div>
+          )}
           <Input
             name="username"
             label="Username"
