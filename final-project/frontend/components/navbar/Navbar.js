@@ -5,7 +5,7 @@ import Menu from './Menu'
 
 const Navbar = () => {
   return (
-    <nav className="flex items-center space-x-8 p-6">
+    <nav className="flex items-center space-x-4 p-6">
       <Menu />
       <p>MONEY TRACKER</p>
       <Logout />
