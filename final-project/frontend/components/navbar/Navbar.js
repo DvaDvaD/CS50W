@@ -1,13 +1,15 @@
 import React from 'react'
 import Username from './Username'
 import Logout from './Logout'
+import Menu from './Menu'
 
 const Navbar = () => {
   return (
-    <nav>
+    <nav className="flex items-center space-x-8 p-6">
+      <Menu />
       <p>MONEY TRACKER</p>
       <Logout />
-      <p>
+      <p className="hidden lg:block">
         Welcome back, <Username />
       </p>
     </nav>
