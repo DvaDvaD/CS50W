@@ -24,7 +24,7 @@ const validationSchema = Yup.object({
 })
 
 const Register = () => {
-  const { error, register } = useAuth()
+  const { error, loading, register } = useAuth()
 
   const onSubmit = values => {
     register(values)
@@ -69,7 +69,8 @@ const Register = () => {
           </p>
           <button
             type="submit"
-            className="text-background bg-primary w-full rounded-lg py-1.5 text-center"
+            disabled={loading}
+            className="text-background bg-primary disabled:bg-text/10 w-full rounded-lg py-1.5 text-center"
           >
             Register
           </button>

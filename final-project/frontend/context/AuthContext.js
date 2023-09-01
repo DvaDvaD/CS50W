@@ -52,6 +52,7 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   const login = data => {
+    setLoading(true)
     fetch(baseURL + '/login/', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -64,10 +65,12 @@ export const AuthProvider = ({ children }) => {
         return res.json()
       })
       .then(user => {
+        setLoading(false)
         setUser(user)
         router.replace('/dashboard')
       })
       .catch(err => {
+        setLoading(false)
         setError(err.message)
         setTimeout(() => setError(null), 6000)
       })
@@ -111,11 +114,13 @@ export const AuthProvider = ({ children }) => {
             accounts: [],
           }),
         }).then(() => {
+          setLoading(false)
           setUser(user)
           router.replace('/dashboard')
         })
       })
       .catch(err => {
+        setLoading(false)
         setError(err.message)
         setTimeout(() => setError(null), 6000)
       })
@@ -123,6 +128,7 @@ export const AuthProvider = ({ children }) => {
 
   const contextData = {
     user,
+    loading,
     error,
     login,
     logout,
