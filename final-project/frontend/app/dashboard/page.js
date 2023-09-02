@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Dashboard = async () => {
-  return <div>Dashboard</div>
+  return <main>Dashboard</main>
 }
 
 export default Dashboard

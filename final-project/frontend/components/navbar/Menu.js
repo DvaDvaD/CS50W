@@ -5,12 +5,17 @@ import { FiMenu, FiSettings } from 'react-icons/fi'
 import { FaMoneyBillTrendUp } from 'react-icons/fa6'
 import { BiSolidDashboard } from 'react-icons/bi'
 import { gsap } from 'gsap'
+import { usePathname } from 'next/navigation'
+
+const linkData = ['/dashboard', '/dashboard/records', '/dashboard/settings']
 
 const Menu = () => {
   const navSliderRef = useRef(null)
   const tl = useRef()
   const [isOpen, setIsOpen] = useState(false)
   const [ctx, setCtx] = useState(gsap.context(() => {}, navSliderRef))
+  const pathname = usePathname()
+  const activeIndex = linkData.indexOf(pathname)
 
   useLayoutEffect(() => {
     if (isOpen) {
@@ -52,23 +57,34 @@ const Menu = () => {
             ></div>
 
             <div className="gsap-slider bg-background absolute top-0 z-10 h-full w-[20rem] space-y-4 p-8">
-              <p className="mb-12 text-xl">MONEY TRACKER</p>
+              <p
+                onClick={() => ctx.remove()}
+                className="mb-12 cursor-pointer text-xl"
+              >
+                MONEY TRACKER
+              </p>
               <Link
-                className="hover:bg-text/10 flex items-center space-x-6 rounded-lg p-3 transition-all"
+                className={`${
+                  activeIndex === 0 && 'bg-primary text-background'
+                } hover:bg-text/10 flex items-center space-x-6 rounded-lg p-3 transition-all hover:text-white`}
                 href="/dashboard"
               >
                 <BiSolidDashboard className="h-auto w-7" />
                 <p>Dashboard</p>
               </Link>
               <Link
-                className="hover:bg-text/10 flex items-center space-x-6 rounded-lg p-3 transition-all"
+                className={`${
+                  activeIndex === 1 && 'bg-primary text-background'
+                } hover:bg-text/10 flex items-center space-x-6 rounded-lg p-3 transition-all hover:text-white`}
                 href="/dashboard/records"
               >
                 <FaMoneyBillTrendUp className="h-auto w-7" />
                 <p>Records</p>
               </Link>
               <Link
-                className="hover:bg-text/10 flex items-center space-x-6 rounded-lg p-3 transition-all"
+                className={`${
+                  activeIndex === 2 && 'bg-primary text-background'
+                } hover:bg-text/10 flex items-center space-x-6 rounded-lg p-3 transition-all hover:text-white`}
                 href="/dashboard/settings"
               >
                 <FiSettings className="h-auto w-7" />
