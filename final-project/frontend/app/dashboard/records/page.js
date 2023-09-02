@@ -5,25 +5,25 @@ import React from 'react'
 const dummyData = [
   {
     amount: 100,
-    date: new Date().toLocaleTimeString(),
+    date: new Date(),
     account: 'Mine',
     description: 'Test transaction',
   },
   {
     amount: 100,
-    date: new Date().toLocaleTimeString(),
+    date: new Date(),
     account: 'Mine',
     description: 'Test transaction',
   },
   {
     amount: 100,
-    date: new Date().toLocaleTimeString(),
+    date: new Date(),
     account: 'Mine',
     description: 'Test transaction',
   },
   {
     amount: 100,
-    date: new Date().toLocaleTimeString(),
+    date: new Date(),
     account: 'Mine',
     description: 'Test transaction',
   },
@@ -31,13 +31,16 @@ const dummyData = [
 
 const Records = () => {
   return (
-    <main className="mx-4">
+    <main className="mx-4 mb-8">
       <h2 className="mb-4 text-2xl">Records</h2>
       {dummyData.map(data => (
-        <div className="hover:bg-text/[3%] border-text/10 flex cursor-pointer items-center justify-between border-t p-2 text-sm font-normal transition-all last:border-b">
+        <div
+          key={data.date}
+          className="hover:bg-text/[3%] border-text/10 flex cursor-pointer items-center justify-between border-t p-2 text-sm font-normal transition-all last:border-b"
+        >
           <div>
             <p>{data.description}</p>
-            <p className="text-text/50">{data.date}</p>
+            <p className="text-text/50">{data.date.toLocaleTimeString()}</p>
             <p className="text-text/30">{data.account}</p>
           </div>
           <p className="font-bold">{formatAsDollars(data.amount)}</p>

@@ -13,6 +13,7 @@ class Transaction(models.Model):
 
 
 class Account(models.Model):
+    balance = models.IntegerField(default=0)
     transactions = models.ManyToManyField(
         Transaction, related_name="account", blank=True
     )

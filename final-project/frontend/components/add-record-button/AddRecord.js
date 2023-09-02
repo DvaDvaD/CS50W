@@ -9,7 +9,7 @@ import { useAuth } from '@/context/AuthContext'
 import DateInput from '../formik/DateInput'
 
 const initialValues = {
-  amount: null,
+  amount: '',
   description: '',
   date: '',
 }
@@ -51,7 +51,7 @@ const AddRecord = () => {
         tl.current = gsap
           .timeline()
           .from('.gsap-backdrop', { opacity: 0 })
-          .from('.gsap-slider', { y: '50vh' }, '-=0.5')
+          .from('.gsap-slider', { y: '100vh' }, '-=0.5')
       })
 
       ctx.add('remove', () => {
@@ -59,7 +59,7 @@ const AddRecord = () => {
           .timeline({
             onComplete: () => setIsOpen(false),
           })
-          .to('.gsap-slider', { y: '50vh' })
+          .to('.gsap-slider', { y: '100vh' })
           .to('.gsap-backdrop', { opacity: 0 }, '-=0.5')
       })
     }
