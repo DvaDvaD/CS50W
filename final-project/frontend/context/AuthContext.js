@@ -22,7 +22,7 @@ const useProtectedRoute = user => {
 
   useEffect(() => {
     if (!user && !inAuthGroup) {
-      router.replace('/')
+      // router.replace('/')
     } else if (user && inAuthGroup) {
       router.replace('/dashboard')
     }

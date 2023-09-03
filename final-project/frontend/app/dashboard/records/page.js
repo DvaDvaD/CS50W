@@ -40,7 +40,7 @@ const Records = () => {
         >
           <div>
             <p>{data.description}</p>
-            <p className="text-text/50">{data.date.toLocaleTimeString()}</p>
+            <p className="text-text/50">{data.date.toLocaleString()}</p>
             <p className="text-text/30">{data.account}</p>
           </div>
           <p className="font-bold">{formatAsDollars(data.amount)}</p>
