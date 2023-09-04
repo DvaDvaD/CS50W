@@ -17,7 +17,7 @@ export default function DashboardLayout({ children }) {
             href="/dashboard"
           >
             <BiSolidDashboard className="h-auto w-7" />
-            <p className="bg-primary text-background absolute left-10 rounded-full px-2 py-0.5 opacity-0 transition-all group-hover:opacity-100">
+            <p className="bg-primary text-background absolute -left-10 rounded-full px-2 py-0.5 opacity-0 transition-all group-hover:left-10 group-hover:opacity-100">
               dashboard
             </p>
           </Link>
@@ -26,7 +26,7 @@ export default function DashboardLayout({ children }) {
             href="/dashboard/records"
           >
             <FaMoneyBillTrendUp className="h-auto w-7" />
-            <p className="bg-primary text-background absolute left-10 rounded-full px-2 py-0.5 opacity-0 transition-all group-hover:opacity-100">
+            <p className="bg-primary text-background absolute -left-10 rounded-full px-2 py-0.5 opacity-0 transition-all group-hover:left-10 group-hover:opacity-100">
               records
             </p>
           </Link>
@@ -35,7 +35,7 @@ export default function DashboardLayout({ children }) {
             href="/dashboard/settings"
           >
             <FiSettings className="h-auto w-7" />
-            <p className="bg-primary text-background absolute left-10 rounded-full px-2 py-0.5 opacity-0 transition-all group-hover:opacity-100">
+            <p className="bg-primary text-background absolute -left-10 rounded-full px-2 py-0.5 opacity-0 transition-all group-hover:left-10 group-hover:opacity-100">
               settings
             </p>
           </Link>
