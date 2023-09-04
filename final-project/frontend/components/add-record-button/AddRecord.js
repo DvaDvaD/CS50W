@@ -8,15 +8,15 @@ import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import DateInput from '../formik/DateInput'
 
-const initialValues = {
+export const initialValues = {
   amount: '',
   description: '',
   date: '',
 }
 
-const patternTwoDigisAfterComma = /^\d+(\.\d{0,2})?$/
+export const patternTwoDigisAfterComma = /^\d+(\.\d{0,2})?$/
 
-const validationSchema = Yup.object({
+export const validationSchema = Yup.object({
   amount: Yup.number('Invalid number')
     .test(
       'is-decimal',
