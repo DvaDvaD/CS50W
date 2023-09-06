@@ -12,7 +12,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserDetail
-        fields = "__all__"
+        fields = ["id", "user", "accounts"]
 
 
 class AccountSerializer(serializers.ModelSerializer):

@@ -104,20 +104,9 @@ export const AuthProvider = ({ children }) => {
       .then(res => res.json())
       .then(user => {
         if (user.message) throw new Error(user.message)
-        fetch(baseURL + '/user_details/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            id: user.id,
-            accounts: [],
-          }),
-        }).then(() => {
-          setLoading(false)
-          setUser(user)
-          router.replace('/dashboard')
-        })
+        setLoading(false)
+        setUser(user)
+        router.replace('/dashboard')
       })
       .catch(err => {
         setLoading(false)

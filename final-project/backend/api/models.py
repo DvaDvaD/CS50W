@@ -23,7 +23,9 @@ class Account(models.Model):
 
 
 class UserDetail(models.Model):
-    id = models.IntegerField(primary_key=True)
+    user = models.OneToOneField(
+        "auth.User", related_name="details", on_delete=models.CASCADE, null=True
+    )
     accounts = models.ManyToManyField(Account, related_name="user", blank=True)
 
     def __str__(self):

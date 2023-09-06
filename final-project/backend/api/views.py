@@ -6,6 +6,7 @@ from .serializers import *
 from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
+from django.http import HttpResponseRedirect
 from rest_framework.reverse import reverse
 from rest_framework.generics import (
     ListAPIView,
@@ -77,11 +78,6 @@ class UserDetailList(ListCreateAPIView):
     serializer_class = UserDetailSerializer
 
 
-class UserDetailDetail(RetrieveUpdateDestroyAPIView):
-    queryset = UserDetail.objects.all()
-    serializer_class = UserDetailSerializer
-
-
 class AccountList(ListCreateAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
@@ -94,8 +90,11 @@ class AccountDetail(RetrieveUpdateDestroyAPIView):
 
 @api_view(["GET"])
 def current_user(request):
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)
+    user_serializer = UserSerializer(request.user)
+    details_serializer = UserDetailSerializer(request.user.details)
+    current_user = {**details_serializer.data, **user_serializer.data}
+    current_user.pop("user")
+    return Response(current_user)
 
 
 @api_view(["POST"])
@@ -144,6 +143,11 @@ def register(request):
             {"message": "Username already taken."}, status=status.HTTP_400_BAD_REQUEST
         )
     login(request, user)
+    details_serializer = UserDetailSerializer(data={"user": user.id, "accounts": []})
+    if details_serializer.is_valid():
+        details_serializer.save()
 
-    serializer = UserSerializer(user)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    user_serializer = UserSerializer(user)
+    current_user = {**details_serializer.data, **user_serializer.data}
+    current_user.pop("user")
+    return Response(current_user)
