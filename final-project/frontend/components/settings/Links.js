@@ -7,7 +7,7 @@ const Links = () => {
   return (
     <>
       <p className="hover:text-accent mb-2 w-fit cursor-pointer font-normal hover:underline">
-        Change password
+        Change username
       </p>
       <p
         onClick={logout}

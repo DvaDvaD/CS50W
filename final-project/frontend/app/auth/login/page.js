@@ -57,16 +57,10 @@ const Login = () => {
               Register
             </Link>
           </p>
-          <p
-            title="Please fill in the e-mail field to receive the password recovery username"
-            className="text-accent mb-3 w-fit cursor-pointer text-sm font-normal hover:underline"
-          >
-            Forget your password?
-          </p>
           <button
             type="submit"
             disabled={loading}
-            className="text-background bg-primary disabled:bg-text/10 w-full rounded-lg py-1.5 text-center"
+            className="text-background bg-primary disabled:bg-text/10 mb-3 w-full rounded-lg py-1.5 text-center"
           >
             Login
           </button>
