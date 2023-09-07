@@ -25,6 +25,7 @@ def api_root(request):
             "register": reverse("register", request=request),
             "users": reverse("users", request=request),
             "user_details": reverse("user_details", request=request),
+            "change_username": reverse("change_username", request=request),
             "current_user": reverse("current_user", request=request),
             "transactions": reverse("transactions", request=request),
             "accounts": reverse("accounts", request=request),
@@ -151,3 +152,17 @@ def register(request):
     current_user = {**details_serializer.data, **user_serializer.data}
     current_user.pop("user")
     return Response(current_user)
+
+
+@api_view(["POST"])
+def change_username(request):
+    new_username = request.data["username"]
+
+    try:
+        request.user.username = new_username
+        request.user.save()
+    except IntegrityError:
+        return Response(
+            {"message": "Username already taken"}, status=status.HTTP_400_BAD_REQUEST
+        )
+    return Response(status=status.HTTP_200_OK)
