@@ -101,6 +101,8 @@ export const AuthProvider = ({ children }) => {
       if (res.ok) {
         router.replace('/')
         setUser(null)
+        setToken(null)
+        localStorage.removeItem('token')
       }
     })
   }
