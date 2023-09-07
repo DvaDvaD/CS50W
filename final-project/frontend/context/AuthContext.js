@@ -115,6 +115,28 @@ export const AuthProvider = ({ children }) => {
       })
   }
 
+  const changeUsername = values => {
+    setLoading(true)
+    fetch(baseURL + '/change_username/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message) throw new Error(data.message)
+        setLoading(false)
+        setUser({ ...user, username: values.username })
+      })
+      .catch(err => {
+        setLoading(false)
+        setError(err.message)
+        setTimeout(() => setError(null), 6000)
+      })
+  }
+
   const contextData = {
     user,
     loading,
@@ -122,6 +144,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     register,
+    changeUsername,
   }
   return (
     <>
