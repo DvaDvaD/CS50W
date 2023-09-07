@@ -48,7 +48,7 @@ const Login = () => {
             placeholder="Enter your password"
             password
           />
-          <p className="-mt-3 text-sm font-normal">
+          <p className="-mt-3 mb-3 text-sm font-normal">
             Don't have an account?{' '}
             <Link
               href={'/auth/register'}

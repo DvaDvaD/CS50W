@@ -1,14 +1,18 @@
 'use client'
 import { useAuth } from '@/context/AuthContext'
+import Link from 'next/link'
 import React from 'react'
 
 const Links = () => {
   const { logout } = useAuth()
   return (
     <>
-      <p className="hover:text-accent mb-2 w-fit cursor-pointer font-normal hover:underline">
+      <Link
+        href="/dashboard/change-username"
+        className="hover:text-accent cursor-Linkointer mb-2 w-fit font-normal hover:underline"
+      >
         Change username
-      </p>
+      </Link>
       <p
         onClick={logout}
         className="hover:text-accent w-fit cursor-pointer font-normal hover:underline"
