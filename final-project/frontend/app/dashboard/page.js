@@ -77,7 +77,7 @@ const Dashboard = async () => {
           {dummyData.map((data, idx) => (
             <AccountCard key={idx} balance={data.balance} />
           ))}
-          <div className="border-text hover:border-accent text-accent flex w-32 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-3 text-center text-sm opacity-10 transition-all hover:opacity-100 sm:w-40 lg:p-4 lg:text-base">
+          <div className="border-text hover:border-accent text-accent flex w-32 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-3 text-center text-sm opacity-10 transition-all hover:opacity-100 sm:w-40 lg:w-48 lg:p-4 lg:text-base">
             <p>+ Add Account</p>
           </div>
         </div>

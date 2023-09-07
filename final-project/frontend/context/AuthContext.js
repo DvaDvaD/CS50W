@@ -48,6 +48,7 @@ export const AuthProvider = ({ children }) => {
         if (!data.id) {
           setUser(null)
         } else {
+          setToken(localStorage.getItem('token'))
           setUser(data)
         }
         setLoading(false)
@@ -111,12 +112,7 @@ export const AuthProvider = ({ children }) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        username: data.username,
-        password: data.password,
-        confirmation: data.confirmation,
-        email: data.email,
-      }),
+      body: JSON.stringify(data),
     })
       .then(res => res.json())
       .then(user => {
