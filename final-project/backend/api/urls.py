@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path("", views.api_root),
@@ -18,4 +19,5 @@ urlpatterns = [
         views.get_transaction,
         name="transaction_detail",
     ),
+    path("api-token-auth/", obtain_auth_token, name="api_token_auth"),
 ]

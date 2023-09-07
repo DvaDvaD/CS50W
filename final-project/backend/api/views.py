@@ -13,6 +13,8 @@ from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
 )
+from rest_framework.decorators import permission_classes
+from rest_framework import permissions
 
 
 # Create your views here.
@@ -29,6 +31,7 @@ def api_root(request):
             "current_user": reverse("current_user", request=request),
             "transactions": reverse("transactions", request=request),
             "accounts": reverse("accounts", request=request),
+            "auth_token": reverse("api_token_auth", request=request),
         }
     )
 
@@ -90,6 +93,7 @@ class AccountDetail(RetrieveUpdateDestroyAPIView):
 
 
 @api_view(["GET"])
+@permission_classes([permissions.IsAuthenticated])
 def current_user(request):
     user_serializer = UserSerializer(request.user)
     details_serializer = UserDetailSerializer(request.user.details)
@@ -155,6 +159,7 @@ def register(request):
 
 
 @api_view(["POST"])
+@permission_classes([permissions.IsAuthenticated])
 def change_username(request):
     new_username = request.data["username"]
 

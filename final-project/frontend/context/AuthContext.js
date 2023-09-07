@@ -33,13 +33,16 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [token, setToken] = useState('')
 
   const router = useRouter()
 
   useProtectedRoute(user)
 
   useEffect(() => {
-    fetch(baseURL + '/users/current_user/')
+    fetch(baseURL + '/users/current_user/', {
+      headers: { Authorization: `Token ${localStorage.getItem('token')}` },
+    })
       .then(res => res.json())
       .then(data => {
         if (!data.id) {
@@ -65,6 +68,20 @@ export const AuthProvider = ({ children }) => {
         return res.json()
       })
       .then(user => {
+        fetch(baseURL + '/api-token-auth/', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(res => res.json())
+          .then(data => {
+            setToken(data.token)
+            if (!localStorage.getItem('token')) {
+              localStorage.setItem('token', data.token)
+            }
+          })
         setLoading(false)
         setUser(user)
         router.replace('/dashboard')
@@ -121,12 +138,12 @@ export const AuthProvider = ({ children }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Token ${token}`,
       },
       body: JSON.stringify(values),
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data.message) throw new Error(data.message)
+      .then(res => {
+        if (!res.ok) throw new Error('Username already taken')
         setLoading(false)
         setUser({ ...user, username: values.username })
       })
