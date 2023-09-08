@@ -73,7 +73,7 @@ const AddRecord = () => {
       {/* Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="text-background bg-primary hover:border-primary hover:bg-background hover:text-primary fixed bottom-5 right-5 cursor-pointer rounded-full p-5 text-center text-3xl leading-[0.5] transition-all hover:border"
+        className="text-background bg-primary hover:border-primary hover:bg-background hover:text-primary border-primary fixed bottom-5 right-5 cursor-pointer rounded-full border p-5 text-center text-3xl leading-[0.5] transition-all"
       >
         +
       </button>
