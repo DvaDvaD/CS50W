@@ -8,9 +8,9 @@ import { FiSettings } from 'react-icons/fi'
 
 export default function DashboardLayout({ children }) {
   return (
-    <div className="flex h-screen flex-col overflow-hidden">
+    <div className="flex h-screen flex-col">
       <Navbar />
-      <main className="container mx-auto px-4 lg:flex lg:max-w-full lg:flex-1 lg:px-0">
+      <main className="container mx-auto flex-1 px-4 lg:flex lg:max-w-full lg:px-0">
         <div className="group mt-6 hidden space-y-6 px-6 lg:block">
           <Link
             className={`hover:bg-text/10 relative flex items-center space-x-6 rounded-full p-2 transition-all hover:text-white`}
@@ -41,7 +41,7 @@ export default function DashboardLayout({ children }) {
           </Link>
         </div>
 
-        <div className="lg:border-text/10 lg:mb-4 lg:mr-4 lg:flex-grow lg:rounded-lg lg:border-2">
+        <div className="lg:border-text/10 h-full lg:mb-4 lg:mr-4 lg:rounded-lg lg:border-2">
           {children}
         </div>
       </main>

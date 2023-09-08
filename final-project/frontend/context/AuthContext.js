@@ -32,7 +32,7 @@ const useProtectedRoute = user => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [token, setToken] = useState('')
 
   const router = useRouter()
@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
   useProtectedRoute(user)
 
   useEffect(() => {
+    setLoading(true)
     fetch(baseURL + '/users/current_user/', {
       headers: { Authorization: `Token ${localStorage.getItem('token')}` },
     })
@@ -153,6 +154,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const contextData = {
+    token,
     user,
     loading,
     error,
