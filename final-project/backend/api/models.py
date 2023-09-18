@@ -9,7 +9,7 @@ class Transaction(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Transaction: {self.amount} - {self.description}"
+        return f"Transaction #{self.id}: {self.amount} - {self.description}"
 
 
 class Account(models.Model):
@@ -19,7 +19,7 @@ class Account(models.Model):
     )
 
     def __str__(self):
-        return f"Account with {self.transactions.count()} transactions"
+        return f"Account #{self.id} with {self.transactions.count()} transactions"
 
 
 class UserDetail(models.Model):

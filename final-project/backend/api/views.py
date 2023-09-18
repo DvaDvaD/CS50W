@@ -37,6 +37,7 @@ def api_root(request):
 
 
 @api_view(["GET", "POST"])
+@permission_classes([permissions.IsAuthenticated])
 def get_transactions(request):
     if request.method == "GET":
         transactions = Transaction.objects.all()
@@ -51,6 +52,7 @@ def get_transactions(request):
 
 
 @api_view(["GET", "PUT", "DELETE"])
+@permission_classes([permissions.IsAuthenticated])
 def get_transaction(request, id):
     try:
         transaction = Transaction.objects.get(pk=id)

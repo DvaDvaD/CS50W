@@ -41,7 +41,7 @@ export default function DashboardLayout({ children }) {
           </Link>
         </div>
 
-        <div className="lg:border-text/10 h-full lg:mb-4 lg:mr-4 lg:rounded-lg lg:border-2">
+        <div className="lg:border-text/10 h-full lg:mb-4 lg:mr-4 lg:flex-grow lg:rounded-lg lg:border-2">
           {children}
         </div>
       </main>
