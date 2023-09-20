@@ -7,14 +7,15 @@ import Input from '../formik/Input'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import DateInput from '../formik/DateInput'
+import usePostRecords from '@/hooks/records/useRecords'
 
 export const initialValues = {
   amount: '',
   description: '',
-  date: '',
+  date: new Date(),
 }
 
-export const patternTwoDigisAfterComma = /^\d+(\.\d{0,2})?$/
+export const patternTwoDigisAfterComma = /^-?\d+(\.\d{0,2})?$/
 
 export const validationSchema = Yup.object({
   amount: Yup.number('Invalid number')
@@ -28,7 +29,6 @@ export const validationSchema = Yup.object({
         return true
       },
     )
-    .positive('Must be greater than 0')
     .required('Required'),
   description: Yup.string().required('Required'),
   date: Yup.date('Invalid date').required('Required'),
@@ -40,8 +40,14 @@ const AddRecord = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [ctx, setCtx] = useState(gsap.context(() => {}, animateRef))
 
+  const { loading, postRecord } = usePostRecords()
+  const { accounts, activeAccountIndex } = useAuth()
   const onSubmit = values => {
-    console.log(JSON.stringify(values))
+    postRecord({ ...values, account: [accounts[activeAccountIndex].id] })
+
+    let newAccounts = [...accounts]
+    newAccounts[activeAccountIndex].balance += values.amount
+    setAccounts(newAccounts)
   }
 
   useLayoutEffect(() => {
@@ -99,7 +105,6 @@ const AddRecord = () => {
                   name="amount"
                   label="Amount"
                   type="number"
-                  min={0}
                   step={0.01}
                   placeholder="$0.00"
                 />
@@ -115,6 +120,7 @@ const AddRecord = () => {
                 />
                 <button
                   type="submit"
+                  disabled={loading}
                   className="text-background bg-primary disabled:bg-text/10 w-full rounded-lg py-1.5 text-center"
                 >
                   Add Record

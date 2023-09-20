@@ -10,8 +10,8 @@ export default function DashboardLayout({ children }) {
   return (
     <div className="flex h-screen flex-col">
       <Navbar />
-      <main className="container mx-auto flex-1 px-4 lg:flex lg:max-w-full lg:px-0">
-        <div className="group mt-6 hidden space-y-6 px-6 lg:block">
+      <main className="container mx-auto flex-1 px-4 lg:flex lg:max-w-full lg:px-0 lg:pb-4">
+        <div className="group sticky top-6 mt-6 hidden h-fit space-y-6 px-6 lg:block">
           <Link
             className={`hover:bg-text/10 relative flex items-center space-x-6 rounded-full p-2 transition-all hover:text-white`}
             href="/dashboard"

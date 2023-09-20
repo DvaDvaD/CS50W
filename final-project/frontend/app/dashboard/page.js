@@ -13,6 +13,8 @@ import {
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import AddRecordDesktop from '@/components/add-record-button/AddRecordDesktop'
+import { useAuth } from '@/context/AuthContext'
+import useAddAccount from '@/hooks/records/useAddAccount'
 
 ChartJS.register(
   CategoryScale,
@@ -60,24 +62,26 @@ export const data = {
   ],
 }
 
-const dummyData = [
-  {
-    balance: 500,
-  },
-  {
-    balance: 500,
-  },
-]
+const Dashboard = () => {
+  const { accounts, setActiveAccountIndex } = useAuth()
+  const { addAccount } = useAddAccount()
 
-const Dashboard = async () => {
   return (
     <div className="lg:flex lg:items-start lg:space-x-8 lg:p-8">
       <div className="lg:flex lg:w-2/3 lg:flex-col">
         <div className="mb-8 flex flex-wrap gap-4">
-          {dummyData.map((data, idx) => (
-            <AccountCard key={idx} balance={data.balance} />
+          {accounts.map((data, idx) => (
+            <AccountCard
+              onClick={() => setActiveAccountIndex(idx)}
+              idx={idx}
+              key={idx}
+              data={data}
+            />
           ))}
-          <div className="border-text hover:border-accent text-accent flex w-32 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-3 text-center text-sm opacity-10 transition-all hover:opacity-100 sm:w-40 lg:w-48 lg:p-4 lg:text-base">
+          <div
+            onClick={addAccount}
+            className="border-text hover:border-accent text-accent flex w-32 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-3 text-center text-sm opacity-10 transition-all hover:opacity-100 sm:w-40 lg:w-48 lg:p-4 lg:text-base"
+          >
             <p>+ Add Account</p>
           </div>
         </div>
@@ -93,7 +97,7 @@ const Dashboard = async () => {
           ))}
         </div>
       </div>
-      <div className="bg-text/[3%] hidden w-1/3 rounded-lg lg:block">
+      <div className="bg-text/[3%] sticky top-8 hidden w-1/3 rounded-lg lg:block">
         <AddRecordDesktop />
       </div>
     </div>

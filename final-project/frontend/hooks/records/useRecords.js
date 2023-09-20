@@ -15,6 +15,7 @@ const usePostRecords = () => {
         body: JSON.stringify(record),
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Token ${localStorage.getItem('token')}`,
         },
       })
     } catch (err) {

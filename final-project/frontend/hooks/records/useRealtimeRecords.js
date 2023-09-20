@@ -1,23 +1,23 @@
-import { useAuth } from '@/context/AuthContext'
 import { baseURL } from '@/lib/fetch'
 import React, { useEffect, useState } from 'react'
 
 const useRealtimeRecords = () => {
   const [records, setRecords] = useState([])
-  const { token } = useAuth()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const getRecords = async () => {
       const res = await fetch(baseURL + '/transactions/', {
         cache: 'no-store',
         headers: {
-          Authorization: `Token ${token}`,
+          Authorization: `Token ${localStorage.getItem('token')}`,
         },
       })
       const data = await res.json()
       setRecords(data)
     }
 
+    getRecords()
     const intervalId = setInterval(() => {
       getRecords()
     }, 3000)
@@ -27,7 +27,7 @@ const useRealtimeRecords = () => {
     }
   }, [])
 
-  return { records }
+  return { records, loading }
 }
 
 export default useRealtimeRecords

@@ -34,6 +34,8 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
   const [token, setToken] = useState('')
+  const [accounts, setAccounts] = useState([])
+  const [activeAccountIndex, setActiveAccountIndex] = useState(0)
 
   const router = useRouter()
 
@@ -51,6 +53,15 @@ export const AuthProvider = ({ children }) => {
         } else {
           setToken(localStorage.getItem('token'))
           setUser(data)
+          Promise.all(
+            data.accounts.map(account => {
+              return fetch(baseURL + '/accounts/' + account + '/').then(res =>
+                res.json(),
+              )
+            }),
+          ).then(accounts => {
+            setAccounts(accounts)
+          })
         }
         setLoading(false)
       })
@@ -122,6 +133,15 @@ export const AuthProvider = ({ children }) => {
         if (user.message) throw new Error(user.message)
         setLoading(false)
         setUser(user)
+        Promise.all(
+          user.accounts.map(account => {
+            return fetch(baseURL + '/accounts/' + account + '/', {
+              cache: 'no-store',
+            }).then(res => res.json())
+          }),
+        ).then(accounts => {
+          setAccounts(accounts)
+        })
         router.replace('/dashboard')
       })
       .catch(err => {
@@ -158,6 +178,10 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     error,
+    accounts,
+    activeAccountIndex,
+    setAccounts,
+    setActiveAccountIndex,
     login,
     logout,
     register,

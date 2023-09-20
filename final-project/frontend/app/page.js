@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import bg from '@/public/bg.jpg'
 
-export default async function Home() {
+export default function Home() {
   return (
     <main className="relative flex h-screen items-center justify-center text-center">
       <div className="border-text/10 sm:bg-background/75 mx-4 w-full rounded-lg sm:w-[25rem] sm:border-2 sm:p-8">

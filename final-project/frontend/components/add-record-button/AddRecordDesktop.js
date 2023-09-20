@@ -2,13 +2,20 @@
 import { Form, Formik } from 'formik'
 import React from 'react'
 import { initialValues, validationSchema } from './AddRecord'
-import { useAuth } from '@/context/AuthContext'
 import DateInput from '../formik/DateInput'
 import Input from '../formik/Input'
+import useRecords from '@/hooks/records/useRecords'
+import { useAuth } from '@/context/AuthContext'
 
 const AddRecordDesktop = () => {
+  const { loading, postRecord } = useRecords()
+  const { accounts, activeAccountIndex, setAccounts } = useAuth()
   const onSubmit = values => {
-    console.log(JSON.stringify(values))
+    postRecord({ ...values, account: [accounts[activeAccountIndex].id] })
+
+    let newAccounts = [...accounts]
+    newAccounts[activeAccountIndex].balance += values.amount
+    setAccounts(newAccounts)
   }
 
   return (
@@ -23,7 +30,6 @@ const AddRecordDesktop = () => {
           name="amount"
           label="Amount"
           type="number"
-          min={0}
           step={0.01}
           placeholder="$0.00"
         />
@@ -39,6 +45,7 @@ const AddRecordDesktop = () => {
         />
         <button
           type="submit"
+          disabled={loading}
           className="text-background bg-primary disabled:bg-text/10 w-full rounded-lg py-1.5 text-center"
         >
           Add Record
