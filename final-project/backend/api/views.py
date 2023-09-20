@@ -68,7 +68,7 @@ def get_transaction(request, id):
     elif request.method == "DELETE":
         serializer = TransactionSerializer(transaction)
         account = Account.objects.get(pk=serializer.data["account"][0])
-        account.balance += serializer.data["amount"]
+        account.balance -= serializer.data["amount"]
         account.save()
         transaction.delete()
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -78,6 +78,20 @@ def get_transaction(request, id):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET"])
+@permission_classes([permissions.IsAuthenticated])
+def get_user_transactions(request, id):
+    try:
+        account = Account.objects.get(id=id)
+    except Account.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serialized_transactions = [
+        TransactionSerializer(i).data for i in account.transactions.all()
+    ]
+    return Response(serialized_transactions)
 
 
 class UserList(ListAPIView):

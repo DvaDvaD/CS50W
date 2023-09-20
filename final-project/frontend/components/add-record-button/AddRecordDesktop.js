@@ -6,16 +6,19 @@ import DateInput from '../formik/DateInput'
 import Input from '../formik/Input'
 import useRecords from '@/hooks/records/useRecords'
 import { useAuth } from '@/context/AuthContext'
+import { Cagliostro } from 'next/font/google'
 
 const AddRecordDesktop = () => {
   const { loading, postRecord } = useRecords()
   const { accounts, activeAccountIndex, setAccounts } = useAuth()
-  const onSubmit = values => {
+  const onSubmit = (values, { resetForm }) => {
     postRecord({ ...values, account: [accounts[activeAccountIndex].id] })
 
     let newAccounts = [...accounts]
     newAccounts[activeAccountIndex].balance += values.amount
     setAccounts(newAccounts)
+    console.log('first')
+    resetForm()
   }
 
   return (

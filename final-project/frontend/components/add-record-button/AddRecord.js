@@ -41,13 +41,14 @@ const AddRecord = () => {
   const [ctx, setCtx] = useState(gsap.context(() => {}, animateRef))
 
   const { loading, postRecord } = usePostRecords()
-  const { accounts, activeAccountIndex } = useAuth()
-  const onSubmit = values => {
+  const { accounts, activeAccountIndex, setAccounts } = useAuth()
+  const onSubmit = (values, { resetForm }) => {
     postRecord({ ...values, account: [accounts[activeAccountIndex].id] })
 
     let newAccounts = [...accounts]
     newAccounts[activeAccountIndex].balance += values.amount
     setAccounts(newAccounts)
+    resetForm()
   }
 
   useLayoutEffect(() => {

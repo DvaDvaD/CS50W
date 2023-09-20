@@ -1,17 +1,16 @@
 'use client'
 
-import { validationSchema } from '@/components/add-record-button/AddRecord'
 import AddRecordDesktop from '@/components/add-record-button/AddRecordDesktop'
-import DateInput from '@/components/formik/DateInput'
-import Input from '@/components/formik/Input'
+import { useAuth } from '@/context/AuthContext'
 import useRealtimeRecords from '@/hooks/records/useRealtimeRecords'
+import { baseURL } from '@/lib/fetch'
 import { formatAsDollars } from '@/utils/formatAsDollars'
-import { Form, Formik } from 'formik'
 import React, { useState } from 'react'
 
 const Records = () => {
   const { records, loading } = useRealtimeRecords()
   const [modalState, setModalState] = useState(null)
+  const { setAccounts, activeAccountIndex } = useAuth()
 
   const handleClickRecord = data => {
     setModalState({ ...data, date: new Date(data.date) })
@@ -21,63 +20,54 @@ const Records = () => {
     setModalState(null)
   }
 
-  const onSubmit = values => {
-    console.log(values)
-  }
-
-  const handleDelete = () => {
-    console.log('delete')
+  const handleDelete = async () => {
+    const res = await fetch(baseURL + '/transactions/' + modalState.id + '/', {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Token ${localStorage.getItem('token')}`,
+      },
+    })
+    setAccounts(prev => {
+      let newAccounts = [...prev]
+      newAccounts[activeAccountIndex].balance -= modalState.amount
+      return newAccounts
+    })
+    setModalState(null)
   }
 
   return (
     <div className="sm:mx-4 lg:mx-0 lg:flex lg:items-start lg:space-x-8 lg:p-8">
       {modalState && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center">
+        <div className="fixed inset-0 z-10 flex items-center justify-center">
           <div
             onClick={handleClickBackdrop}
             className="absolute top-0 h-full w-full bg-black/50"
           ></div>
           <div className="bg-background z-10 mx-4 max-w-[25rem] whitespace-break-spaces rounded-lg p-8">
-            <Formik
-              validationSchema={validationSchema}
-              initialValues={modalState}
-              onSubmit={onSubmit}
+            <p className="text-2xl">
+              Are you sure you want to delete this record?
+            </p>
+            <div className="my-4 font-normal">
+              <p>
+                <b>Description:</b> {modalState.description}
+              </p>
+              <p>
+                <b>Account:</b> #{modalState.account[0]}
+              </p>
+              <p>
+                <b>Amount:</b> {formatAsDollars(modalState.amount)}
+              </p>
+              <p>
+                <b>Date:</b> {new Date(modalState.date).toLocaleString()}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="text-background disabled:bg-text/10 w-full rounded-lg bg-red-500 px-6 py-1.5 text-center"
             >
-              <Form className="w-full">
-                <p className="mb-4 text-center text-3xl">
-                  Modify/Delete Record
-                </p>
-                <Input
-                  name="amount"
-                  label="Amount"
-                  type="number"
-                  step={0.01}
-                  placeholder="$0.00"
-                />
-                <Input
-                  name="description"
-                  label="Description"
-                  placeholder="Description"
-                />
-                <DateInput
-                  name="date"
-                  label="Date and time"
-                  placeholderText="Click to select date and time"
-                />
-                <button
-                  type="submit"
-                  className="text-background bg-primary disabled:bg-text/10 mb-3 w-full rounded-lg py-1.5 text-center"
-                >
-                  Add Record
-                </button>
-                <button
-                  type="button"
-                  className="text-background disabled:bg-text/10 w-full rounded-lg bg-red-500 py-1.5 text-center"
-                >
-                  Delete Record
-                </button>
-              </Form>
-            </Formik>
+              Delete Record
+            </button>
           </div>
         </div>
       )}

@@ -23,4 +23,27 @@
     -moz-appearance: textfield;
     appearance: textfield;
   }
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #0d060e;
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #458637;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #8aaa46;
+  }
 }

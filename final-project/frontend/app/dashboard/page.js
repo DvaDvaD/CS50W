@@ -1,70 +1,16 @@
 'use client'
 import AccountCard from '@/components/dashboard/AccountCard'
 import React from 'react'
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js'
-import { Line } from 'react-chartjs-2'
 import AddRecordDesktop from '@/components/add-record-button/AddRecordDesktop'
 import { useAuth } from '@/context/AuthContext'
 import useAddAccount from '@/hooks/records/useAddAccount'
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-)
-
-export const options = {
-  responsive: true,
-  layout: {
-    padding: 20,
-  },
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: 'Chart.js Line Chart',
-    },
-  },
-}
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
-
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: [100, 200, 3, 50, 500],
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: [100, 200, 3, 50, 500].reverse(),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-}
+import { formatAsDollars } from '@/utils/formatAsDollars'
+import useRealtimeRecords from '@/hooks/records/useRealtimeRecords'
 
 const Dashboard = () => {
   const { accounts, setActiveAccountIndex } = useAuth()
   const { addAccount } = useAddAccount()
+  const { records } = useRealtimeRecords()
 
   return (
     <div className="lg:flex lg:items-start lg:space-x-8 lg:p-8">
@@ -87,14 +33,43 @@ const Dashboard = () => {
         </div>
 
         <div className="flex flex-grow flex-wrap justify-center gap-4">
-          {[1, 2, 3, 4].map((_, idx) => (
-            <div
-              key={idx}
-              className="bg-text/[3%] w-full rounded-lg sm:w-[calc(50%-0.5rem)]"
-            >
-              <Line options={options} data={data} />
+          <div className="bg-text/[3%] flex h-80 w-full flex-col rounded-lg p-4 md:w-[calc(50%-0.5rem)]">
+            <p className="text-xl">Total Balance</p>
+            <hr className="border-text/[50%] my-2" />
+            <div className="flex h-full items-center justify-center">
+              <p className="text-5xl">
+                {formatAsDollars(
+                  accounts.reduce((acc, current) => acc + current.balance, 0),
+                )}
+              </p>
             </div>
-          ))}
+          </div>
+          <div className="bg-text/[3%] flex h-80 w-full flex-col rounded-lg p-4 md:w-[calc(50%-0.5rem)]">
+            <p className="text-xl">Recent records overview</p>
+            <hr className="border-text/[50%] my-2" />
+            <div className="h-full overflow-y-scroll">
+              {records.slice(0, 10).map(record => (
+                <div
+                  key={record.id}
+                  className="hover:bg-text/[3%] border-text/10 cursor-pointer border-t p-2 text-sm font-normal transition-all last:border-b"
+                >
+                  <p className="font-semibold">{record.description}</p>
+                  <p className="text-text/50">
+                    {new Date(record.date).toLocaleString()}
+                  </p>
+                  <p
+                    className={`font-bold ${
+                      record.amount > 0
+                        ? 'text-primary'
+                        : record.amount < 0 && 'text-red-500'
+                    }`}
+                  >
+                    {formatAsDollars(record.amount)}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
       <div className="bg-text/[3%] sticky top-8 hidden w-1/3 rounded-lg lg:block">
