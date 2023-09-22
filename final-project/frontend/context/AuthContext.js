@@ -1,5 +1,6 @@
 'use client'
 import { baseURL } from '@/lib/fetch'
+import { getURL } from 'next/dist/shared/lib/utils'
 import { usePathname, useRouter } from 'next/navigation'
 import React, {
   createContext,
@@ -35,13 +36,45 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [token, setToken] = useState('')
   const [accounts, setAccounts] = useState([])
+  const [debts, setDebts] = useState([])
   const [activeAccountIndex, setActiveAccountIndex] = useState(0)
 
   const router = useRouter()
 
   useProtectedRoute(user)
 
-  useEffect(() => {
+  const getDebts = data => {
+    console.log(data)
+    Promise.all(
+      data.debt_records.map(debt_record => {
+        return fetch(baseURL + '/debt_records/' + debt_record + '/').then(res =>
+          res.json(),
+        )
+      }),
+    ).then(debt_records => {
+      Promise.all(
+        debt_records.map(debt_record => {
+          return fetch(
+            baseURL + '/users/debt_records/' + debt_record.id + '/',
+            {
+              headers: {
+                Authorization: `Token ${localStorage.getItem('token')}`,
+              },
+              cache: 'no-cache',
+            },
+          )
+            .then(res => res.json())
+            .then(data => {
+              return { ...debt_record, transactions: data }
+            })
+        }),
+      ).then(debt_records => {
+        setDebts(debt_records)
+      })
+    })
+  }
+
+  const getCurrentUser = () => {
     setLoading(true)
     fetch(baseURL + '/users/current_user/', {
       headers: { Authorization: `Token ${localStorage.getItem('token')}` },
@@ -62,9 +95,14 @@ export const AuthProvider = ({ children }) => {
           ).then(accounts => {
             setAccounts(accounts)
           })
+          getDebts(data)
         }
         setLoading(false)
       })
+  }
+
+  useEffect(() => {
+    getCurrentUser()
   }, [])
 
   const login = data => {
@@ -94,10 +132,11 @@ export const AuthProvider = ({ children }) => {
             if (!localStorage.getItem('token')) {
               localStorage.setItem('token', data.token)
             }
+            setLoading(false)
+            setUser(user)
+            getCurrentUser()
+            router.replace('/dashboard')
           })
-        setLoading(false)
-        setUser(user)
-        router.replace('/dashboard')
       })
       .catch(err => {
         setLoading(false)
@@ -142,6 +181,7 @@ export const AuthProvider = ({ children }) => {
         ).then(accounts => {
           setAccounts(accounts)
         })
+        login({ username: data.username, password: data.password })
         router.replace('/dashboard')
       })
       .catch(err => {
@@ -180,8 +220,13 @@ export const AuthProvider = ({ children }) => {
     error,
     accounts,
     activeAccountIndex,
+    debts,
+    getDebts,
+    setDebts,
+    setUser,
     setAccounts,
     setActiveAccountIndex,
+    getCurrentUser,
     login,
     logout,
     register,

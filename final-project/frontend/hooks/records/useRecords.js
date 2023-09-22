@@ -18,6 +18,7 @@ const usePostRecords = () => {
           Authorization: `Token ${localStorage.getItem('token')}`,
         },
       })
+      return res.json()
     } catch (err) {
       setLoading(false)
       setMessage(err.message)

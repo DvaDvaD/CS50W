@@ -6,17 +6,19 @@ const useAddAccount = () => {
   const { setAccounts, user } = useAuth()
 
   const addAccount = async () => {
-    const res = await fetch(baseURL + '/accounts/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Token ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify({ user: [user.id] }),
-    })
+    if (localStorage.getItem('token')) {
+      const res = await fetch(baseURL + '/accounts/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({ user: [user.id] }),
+      })
 
-    const newAccount = await res.json()
-    setAccounts(prev => [...prev, newAccount])
+      const newAccount = await res.json()
+      setAccounts(prev => [...prev, newAccount])
+    }
   }
 
   return { addAccount }

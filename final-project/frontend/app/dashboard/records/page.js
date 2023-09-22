@@ -43,7 +43,7 @@ const Records = () => {
             onClick={handleClickBackdrop}
             className="absolute top-0 h-full w-full bg-black/50"
           ></div>
-          <div className="bg-background z-10 mx-4 max-w-[25rem] whitespace-break-spaces rounded-lg p-8">
+          <div className="border-text/10 bg-background z-10 mx-4 max-w-[25rem] whitespace-break-spaces rounded-lg border-2 p-8">
             <p className="text-2xl">
               Are you sure you want to delete this record?
             </p>

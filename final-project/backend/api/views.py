@@ -31,6 +31,7 @@ def api_root(request):
             "current_user": reverse("current_user", request=request),
             "transactions": reverse("transactions", request=request),
             "accounts": reverse("accounts", request=request),
+            "debt_records": reverse("debt_records", request=request),
             "auth_token": reverse("api_token_auth", request=request),
         }
     )
@@ -94,6 +95,20 @@ def get_user_transactions(request, id):
     return Response(serialized_transactions)
 
 
+@api_view(["GET"])
+@permission_classes([permissions.IsAuthenticated])
+def get_debt_transactions(request, id):
+    try:
+        debt_record = DebtRecord.objects.get(id=id)
+    except DebtRecord.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serialized_debt_record = [
+        TransactionSerializer(i).data for i in debt_record.transactions.all()
+    ]
+    return Response(serialized_debt_record)
+
+
 class UserList(ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -112,6 +127,16 @@ class AccountList(ListCreateAPIView):
 class AccountDetail(RetrieveUpdateDestroyAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
+
+
+class DebtRecordList(ListCreateAPIView):
+    queryset = DebtRecord.objects.all()
+    serializer_class = DebtRecordSerializer
+
+
+class DebtRecordDetail(RetrieveUpdateDestroyAPIView):
+    queryset = DebtRecord.objects.all()
+    serializer_class = DebtRecordSerializer
 
 
 @api_view(["GET"])

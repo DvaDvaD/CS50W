@@ -12,7 +12,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserDetail
-        fields = ["id", "user", "accounts"]
+        fields = ["id", "user", "accounts", "debt_records"]
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -25,3 +25,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "email", "username", "date_joined"]
+
+
+class DebtRecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DebtRecord
+        fields = ["id", "name", "transactions", "user"]

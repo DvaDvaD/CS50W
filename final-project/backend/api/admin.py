@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(Transaction)
 admin.site.register(Account)
 admin.site.register(UserDetail)
+admin.site.register(DebtRecord)
