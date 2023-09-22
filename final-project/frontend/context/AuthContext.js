@@ -44,7 +44,6 @@ export const AuthProvider = ({ children }) => {
   useProtectedRoute(user)
 
   const getDebts = data => {
-    console.log(data)
     Promise.all(
       data.debt_records.map(debt_record => {
         return fetch(baseURL + '/debt_records/' + debt_record + '/').then(res =>

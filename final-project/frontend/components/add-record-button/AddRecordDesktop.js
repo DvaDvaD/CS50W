@@ -17,7 +17,6 @@ const AddRecordDesktop = () => {
     let newAccounts = [...accounts]
     newAccounts[activeAccountIndex].balance += values.amount
     setAccounts(newAccounts)
-    console.log('first')
     resetForm()
   }
 
